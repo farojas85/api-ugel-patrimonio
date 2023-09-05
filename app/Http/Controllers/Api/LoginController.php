@@ -28,7 +28,7 @@ class LoginController extends Controller
 
         $this->validate($request,$reglas,$mensajes);
 
-        $credenciales = ['name' => $request->name, 'password' => $request->password, 'es_activo' => 1];
+        $credenciales = ['name' => $request->name, 'password' => $request->password];
 
         $user = User::where('name',$request->name)->first();
 
