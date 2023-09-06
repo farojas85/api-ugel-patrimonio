@@ -54,6 +54,7 @@ class LoginController extends Controller
 
                     $success['token'] = $user->createToken('token-api')->plainTextToken;
                     $success['user'] = $user->id;
+                    $success['ok'] = 1;
 
                     return response()->json($success,200);
                 }
