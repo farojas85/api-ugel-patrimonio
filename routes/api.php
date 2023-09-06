@@ -19,6 +19,10 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+Route::get('/', function () {
+    return app()->version();
+});
+
 Route::post('login',[LoginController::class,'login']);
 Route::post('logout',[LoginController::class,'logout']);
 

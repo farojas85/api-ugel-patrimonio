@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\LoginRequest;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -14,20 +15,27 @@ class LoginController extends Controller
 {
     public function Login(Request $request)
     {
-        $secret = env('VITE_SECRET_KEY');
+        //$secret = env('VITE_SECRET_KEY');
+
         $reglas = [
-            'name' => ['required', 'string'],
-            'password' => ['required', 'string'],
+            'name' => ['required', 'string','min:8'],
+            'password' => ['required', 'string','min:8'],
         ];
 
         $mensajes  = [
             'required' => '* Campo obligatorio',
-            'string' => 'Ingrese caracteres alfanuméricos'
+            'string' => 'Ingrese caracteres alfanuméricos',
+            'min' => 'Mínimo :min caracteres'
         ];
 
+        $validator = Validator::make($request->all(),$reglas,$mensajes);
 
-        $this->validate($request,$reglas,$mensajes);
-
+        if($validator->fails())
+        {
+            $errors = $validator->errors()->toArray();
+            return response()->json($errors,422);
+        }
+        
         $credenciales = ['name' => $request->name, 'password' => $request->password];
 
         $user = User::where('name',$request->name)->first();
