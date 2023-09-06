@@ -18,8 +18,8 @@ class LoginController extends Controller
         //$secret = env('VITE_SECRET_KEY');
 
         $reglas = [
-            'name' => ['required', 'string','min:8'],
-            'password' => ['required', 'string','min:8'],
+            'name' => ['required', 'string'],
+            'password' => ['required', 'string'],
         ];
 
         $mensajes  = [
@@ -33,6 +33,9 @@ class LoginController extends Controller
         if($validator->fails())
         {
             $errors = $validator->errors()->toArray();
+            // $errors = [
+            //     'errors' => $errors
+            // ];
             return response()->json($errors,422);
         }
         
