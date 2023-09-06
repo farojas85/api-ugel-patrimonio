@@ -49,8 +49,8 @@ class LoginController extends Controller
             {
                 if(auth()->attempt($credenciales))
                 {
-                    $user->last_login = Carbon::now();
-                    $user->save();
+                    // $user->last_login = Carbon::now();
+                    // $user->save();
 
                     $success['token'] = $user->createToken('token-api')->plainTextToken;
                     $success['user'] = $user->id;
