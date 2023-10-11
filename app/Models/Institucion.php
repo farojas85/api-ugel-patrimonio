@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Institucion extends Model
@@ -15,6 +16,16 @@ class Institucion extends Model
     protected $fillable = [
         'codigo_modular', 'nombre', 'es_activo'
     ];
+
+    /**
+     * Get the sede that owns the Institucion
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function sede(): BelongsTo
+    {
+        return $this->belongsTo(Sede::class, 'sede_id', 'id');
+    }
 
     /**
      * Get all of the patrimonios for the Institucion

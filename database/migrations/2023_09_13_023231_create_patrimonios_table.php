@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('patrimonios', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo_patrimonio')->nullable();
             $table->foreignId('institucion_id')->nullable()->constrained('instituciones','id')
-                ->onUpdate('cascade')->onDelete('cascade');
+                ->onUpdate('cascade')->onDelete('cascade')
+            ;
+            $table->string('codigo_patrimonio')->index()->nullable();
             $table->string('descripcion',255);
-            $table->string('locacion',255)->nullable();
+            $table->string('marca')->index()->nullable();
+            $table->string('modelo')->index()->nullable();
+            $table->string('numero_serie')->index()->nullable();
+            $table->string('ubicacion_fiscal',255)->index()->nullable();
             $table->foreignId('estado_id')->nullable()->constrained('estados','id')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedTinyInteger('es_activo')->default(1);

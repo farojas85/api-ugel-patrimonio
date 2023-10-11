@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('instituciones', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sede_id')->nullable()->constrained('sedes','id')
-                ->onDelete('cascade')->onUpdate('cascade')
-            ;
-            $table->string('codigo_modular',50);
-            $table->string('nombre',200);
+            $table->string('nombre')->index();
+            $table->string('slug')->index();
             $table->unsignedTinyInteger('es_activo')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('instituciones');
+        Schema::dropIfExists('roles');
     }
 };

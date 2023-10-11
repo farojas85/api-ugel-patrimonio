@@ -26,19 +26,25 @@ class PatrimonioSeeder extends Seeder
 
         $this->command->getOutput()->writeln('  Iniciando Importación de Patrimonio Ugel Huacaybamba...');
 
-        $this->truncatePatrimonios();
-        $this->command->getOutput()->writeln('  Datos Limpiados de Patrimonios...');
 
-        $this->truncateInstituciones();
-        $this->command->getOutput()->writeln('  Datos Limpiados de Instituciones...');
+        // $this->truncatePatrimonios();
+        // $this->command->getOutput()->writeln('  Datos Limpiados de Patrimonios...');
+
+        // $this->truncateInstituciones();
+        // $this->command->getOutput()->writeln('  Datos Limpiados de Instituciones...');
+
+        // $this->truncateSedes();
+        // $this->command->getOutput()->writeln('  Datos Limpiados de Sedes...');
+
 
         try {
             $spreadsheet = IOFactory::load($xlsxFile);
+
             $sheet        = $spreadsheet->getActiveSheet();
             $row_limit    = $sheet->getHighestDataRow();
             $column_limit = $sheet->getHighestDataColumn();
             $row_range    = range( 2, $row_limit );
-            $column_range = range( 'F', $column_limit );
+            $column_range = range( 'M', $column_limit );
             $startcount = 2;
 
             $this->command->getOutput()->writeln('  Cantidad de registros: '.($row_limit-1));
@@ -50,20 +56,30 @@ class PatrimonioSeeder extends Seeder
             $progressBar->start();
 
             foreach($row_range as $row) {
+                //Guardamos la sede
+                $dataSede = array(
+                    'codigo' => $sheet->getCell('A'.$row)->getValue(),
+                    'nombre' => $sheet->getCell('B'.$row)->getValue()
+                );
+                $sede = $this->saveSede($dataSede);
+
                 //Guardamos la institucion;
                 $dataInstitucion = array(
-                    'codigo_modular' =>  $sheet->getCell('A'.$row)->getValue(),
-                    'nombre' => $sheet->getCell('B'.$row)->getValue()
+                    'codigo_modular' =>  $sheet->getCell('C'.$row)->getValue(),
+                    'nombre' => $sheet->getCell('D'.$row)->getValue()
                 );
 
                 $institucion = $this->saveInstitucion($dataInstitucion);
 
                 //Guardamos el patrimonio
                 $data = array(
-                    'codigo_patrimonio' => $sheet->getCell('C'.$row)->getValue(),
+                    'codigo_patrimonio' => $sheet->getCell('E'.$row)->getValue(),
                     'institucion_id' => $institucion->id,
-                    'descripcion' => $sheet->getCell('D'.$row)->getValue(),
-                    'locacion' => $sheet->getCell('F'.$row)->getValue(),
+                    'descripcion' => $sheet->getCell('F'.$row)->getValue(),
+                    'marca' => $sheet->getCell('I'.$row)->getValue(),
+                    'modelo' => $sheet->getCell('G'.$row)->getValue(),
+                    'numero_serie' => $sheet->getCell('M'.$row)->getValue(),
+                    'ubicacion_fiscal' => $sheet->getCell('L'.$row)->getValue(),
                     'estado_id' => $estado_regular
                 );
 

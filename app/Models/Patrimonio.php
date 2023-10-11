@@ -12,7 +12,8 @@ class Patrimonio extends Model
     use HasFactory;
 
     protected $fillable = [
-        'institucion_id','descripcion', 'locacion',
+        'institucion_id', 'codigo_patrimonio','descripcion',
+        'marca','modelo','numero_serie', 'ubicacion_fiscal',
         'estado_id', 'es_activo'
     ];
 
